@@ -43,16 +43,9 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements CameraInitializer.ImageListener {
 
-    //node names for personally trained yolo model
-//    final String inputName="conv2d_1_input";
-//    final String outputName="reshape_1/Reshape";
-
     final String inputName = "input";
     final String outputName = "output"; //original tiny-yolo-voc
-//    final String outputName="BiasAdd_8";//quantized tiny-yolo-voc
     Classifier c;
-    final String[] labelNames = new String[]{"airplane", "automobile", "bird", "cat", "deer", "dog", "frog", "horse", "ship", "truck"};
-    TensorFlowInferenceInterface inferenceInterface;
     StatTimer timer;
 
     // Used to load the "native-lib" library on application startup.
@@ -88,9 +81,6 @@ public class MainActivity extends AppCompatActivity implements CameraInitializer
     }
 
 
-    public void analyzeClick(View view) {
-
-    }
 
     Bitmap drawBitmap,b,b2,screenMap;
     Canvas canvas;
