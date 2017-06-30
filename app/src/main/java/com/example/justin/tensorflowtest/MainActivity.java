@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements CameraInitializer
         setContentView(R.layout.activity_main);
         v = (TextView) findViewById(R.id.sample_text);
         i = (ImageView) findViewById(R.id.imageview);
-        c = TensorFlowYoloDetector.create(getAssets(), "file:///android_asset/optimized-robot-ball-3.pb", 416, inputName, outputName, 32);
+        c = TensorFlowYoloDetector.create(getAssets(), "file:///android_asset/optimized-robot-redblueball-1.pb", 416, inputName, outputName, 32);
         BitmapUtils.setContext(this);
         timer=new StatTimer();
         textPaint=new Paint();
