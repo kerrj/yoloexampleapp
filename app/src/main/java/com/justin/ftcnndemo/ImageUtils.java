@@ -122,7 +122,7 @@ public class ImageUtils {
 
     /**
      * Converts 32-bit ARGB8888 image data to YUV420SP data.  This is useful, for
-     * instance, in creating data to feed the classes that rely on raw camera
+     * instance, in creating data to feed the classes that rely on raw camera2
      * preview frames.
      *
      * @param input An array of input pixels in ARGB8888 format.
@@ -135,7 +135,7 @@ public class ImageUtils {
 
     /**
      * Converts 16-bit RGB565 image data to YUV420SP data.  This is useful, for
-     * instance, in creating data to feed the classes that rely on raw camera
+     * instance, in creating data to feed the classes that rely on raw camera2
      * preview frames.
      *
      * @param input An array of input pixels in RGB565 format.

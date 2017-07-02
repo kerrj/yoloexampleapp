@@ -21,7 +21,7 @@ limitations under the License.
 #include "yuv2rgb.h"
 
 #define IMAGEUTILS_METHOD(METHOD_NAME) \
-  Java_com_example_justin_tensorflowtest_ImageUtils_##METHOD_NAME  // NOLINT
+  Java_com_justin_ftcnndemo_ImageUtils_##METHOD_NAME  // NOLINT
 
 #ifdef __cplusplus
 extern "C" {
