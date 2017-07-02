@@ -1,5 +1,7 @@
-package com.example.justin.tensorflowtest;
+package com.justin.ftcnndemo;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +16,9 @@ import android.media.ImageReader;
 import android.media.ThumbnailUtils;
 import android.os.Trace;
 import android.renderscript.ScriptIntrinsicYuvToRGB;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -65,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements CameraInitializer
         setContentView(R.layout.activity_main);
         v = (TextView) findViewById(R.id.sample_text);
         i = (ImageView) findViewById(R.id.imageview);
-        c = TensorFlowYoloDetector.create(getAssets(), "file:///android_asset/optimized-robot-redblueball-1.pb", 416, inputName, outputName, 32);
+        c = TensorFlowYoloDetector.create(getAssets(), "file:///android_asset/optimized-robot-redblueball-2.pb", 416, inputName, outputName, 32);
         BitmapUtils.setContext(this);
         timer=new StatTimer();
         textPaint=new Paint();
@@ -76,11 +81,24 @@ public class MainActivity extends AppCompatActivity implements CameraInitializer
         rectPaint.setColor(Color.GREEN);
         rectPaint.setStrokeWidth(3);
         rectPaint.setStyle(Paint.Style.STROKE);
+
+        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+        if(permissionCheck!= PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 0);
+            return;
+        }
         camera=new CameraInitializer(this,this);
         camera.startCamera();
     }
 
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(grantResults.length>0&&grantResults[0]==PackageManager.PERMISSION_GRANTED){
+            camera=new CameraInitializer(this,this);
+            camera.startCamera();
+        }
+    }
 
     Bitmap drawBitmap,b,b2,screenMap;
     Canvas canvas;
@@ -119,7 +137,9 @@ public class MainActivity extends AppCompatActivity implements CameraInitializer
     @Override
     protected void onPause() {
         super.onPause();
-        camera.stopCamera();
+        if(camera!=null){
+            camera.stopCamera();
+        }
     }
     ExecutorService executorService= Executors.newFixedThreadPool(2);
 

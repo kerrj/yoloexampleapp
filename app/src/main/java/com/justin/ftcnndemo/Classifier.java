@@ -1,4 +1,4 @@
-package com.example.justin.tensorflowtest;
+package com.justin.ftcnndemo;
 
 import android.graphics.Bitmap;
 import android.graphics.RectF;

@@ -1,4 +1,4 @@
-package com.example.justin.tensorflowtest;
+package com.justin.ftcnndemo;
 
 import android.media.Image;
 import android.util.Log;
