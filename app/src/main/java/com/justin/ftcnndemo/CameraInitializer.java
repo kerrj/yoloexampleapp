@@ -27,6 +27,9 @@ public class CameraInitializer {
     ImageListener listener;
     public CameraInitializer(final ImageListener listener){
         this.listener=listener;
+
+    }
+    public void start(){
         c=Camera.open();
         t=new SurfaceTexture(0);
         try {

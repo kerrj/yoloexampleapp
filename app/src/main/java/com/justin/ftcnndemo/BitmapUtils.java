@@ -27,15 +27,14 @@ public class BitmapUtils {
         }
         return data;
     }
-
+    static Bitmap b;
     public static Bitmap resizeBitmap(Bitmap input){
         if(input.getWidth()==input.getHeight()){
             return Bitmap.createScaledBitmap(input,416,416,false);
         }
         int width=input.getWidth(),height=input.getHeight();
-        Bitmap b=width<height?Bitmap.createScaledBitmap(input,416,416*height/width,false):Bitmap.createScaledBitmap(input,416*width/height,416,false);
-        Bitmap output= ThumbnailUtils.extractThumbnail(b,416,416);
-        return output;
+        b=width<height?Bitmap.createScaledBitmap(input,416,416*height/width,false):Bitmap.createScaledBitmap(input,416*width/height,416,false);
+        return ThumbnailUtils.extractThumbnail(b,416,416);
     }
 
     public static Bitmap loadRes(String name) {

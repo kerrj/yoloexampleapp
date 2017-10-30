@@ -64,7 +64,11 @@ public class MainActivity extends AppCompatActivity {
         rectPaint.setColor(Color.GREEN);
         rectPaint.setStrokeWidth(3);
         rectPaint.setStyle(Paint.Style.STROKE);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
         if(permissionCheck!= PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 0);
@@ -75,12 +79,24 @@ public class MainActivity extends AppCompatActivity {
 
     public void initializeCamera(){
         if(Build.VERSION.SDK_INT>21){
-            camera2 =new Camera2Initializer(camera2Listener,this);
-            camera2.startCamera();
+            if(camera2!=null){
+                camera2.stopCamera();
+                camera2.startCamera();
+            }else {
+                camera2 = new Camera2Initializer(camera2Listener, this);
+                camera2.startCamera();
+            }
         }else {
-            camera = new CameraInitializer(cameraListener);
+            if(camera!=null){
+                camera.stop();
+                camera.start();
+            }else {
+                camera = new CameraInitializer(cameraListener);
+                camera.start();
+            }
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -89,21 +105,23 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    Bitmap drawBitmap,b,b2,screenMap;
+    Bitmap drawBitmap,b,screenMap;
     Canvas canvas;
     Paint textPaint,rectPaint;
-    double recognize,draw;
+    double recognize;
     public void processBitmap(Bitmap input){
         timer.tic();
         b=BitmapUtils.resizeBitmap(input);
-        b2=BitmapUtils.rotateBitmap(b);
-        List<Classifier.Recognition> r = c.recognizeImage(b2);
+        timer.toc("resize bitmap");
+        timer.tic();
+        drawBitmap=BitmapUtils.rotateBitmap(b);
+        timer.toc("rotate bitmap");
+        timer.tic();
+        List<Classifier.Recognition> r = c.recognizeImage(drawBitmap);
         recognize=timer.toc("Recognize Image");
         timer.tic();
-        drawBitmap=b2.copy(Bitmap.Config.ARGB_8888,true);
         canvas=new Canvas(drawBitmap);
         for (Classifier.Recognition recog : r) {
-            Log.d("Recognition", recog.toString());
             float scalar=1.0f;
             canvas.drawRect(recog.getLocation().left*scalar,recog.getLocation().top*scalar,
                     recog.getLocation().right*scalar,recog.getLocation().bottom*scalar,rectPaint);

@@ -43,7 +43,28 @@ public class TensorFlowYoloDetector implements Classifier {
     };
 
     private static final String[] LABELS={"robot","redball","blueball"};
-
+//    private static final String[] LABELS = {
+//        "aeroplane",
+//        "bicycle",
+//        "bird",
+//        "boat",
+//        "bottle",
+//        "bus",
+//        "car",
+//        "cat",
+//        "chair",
+//        "cow",
+//        "diningtable",
+//        "dog",
+//        "horse",
+//        "motorbike",
+//        "person",
+//        "pottedplant",
+//        "sheep",
+//        "sofa",
+//        "train",
+//        "tvmonitor"
+//    };
     // Config values.
     private String inputName;
     private int inputSize;
@@ -168,12 +189,13 @@ public class TensorFlowYoloDetector implements Classifier {
         // on the provided parameters.
         bitmap.getPixels(intValues, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
 
+        timer.tic();
         for (int i = 0; i < intValues.length; ++i) {
             floatValues[i * 3 + 0] = ((intValues[i] >> 16) & 0xFF) / 255.0f;
             floatValues[i * 3 + 1] = ((intValues[i] >> 8) & 0xFF) / 255.0f;
             floatValues[i * 3 + 2] = (intValues[i] & 0xFF) / 255.0f;
         }
-
+        timer.toc("Preprocess");
         // Copy the input data into TensorFlow.
         timer.tic();
         inferenceInterface.feed(inputName, floatValues, 1, inputSize, inputSize, 3);
